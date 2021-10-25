@@ -1,0 +1,13 @@
+﻿<Application x:Class="MVVMStart.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:MVVMStart"
+             xmlns:view="clr-namespace:MVVMStart.View" 
+             xmlns:viewmodel ="clr-namespace:MVVMStart.ViewModel"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <DataTemplate DataType="{x:Type viewmodel:ExampleViewModel}">
+            <view:ExampleView/>
+        </DataTemplate>
+    </Application.Resources>
+</Application>
