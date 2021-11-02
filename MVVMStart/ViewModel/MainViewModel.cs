@@ -9,7 +9,7 @@ namespace MVVMStart.ViewModel
         /// <summary>
         /// A getter and setter for my viewmodel
         /// </summary>
-        public ExampleViewModel TDFVM { get; set; }
+        public ConnectViewModel TDFVM { get; set; }
         /// <summary>
         /// a private instacnce of my current view
         /// </summary>
@@ -27,7 +27,7 @@ namespace MVVMStart.ViewModel
         /// </summary>
         public MainViewModel()
         {
-            TDFVM = new ExampleViewModel();
+            TDFVM = new ConnectViewModel();
             CurrentView = TDFVM;
         }
     }

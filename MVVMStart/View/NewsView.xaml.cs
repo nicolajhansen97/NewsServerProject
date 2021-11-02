@@ -13,18 +13,13 @@ using System.Windows.Shapes;
 namespace MVVMStart.View
 {
     /// <summary>
-    /// Interaction logic for ExampleView.xaml
+    /// Interaction logic for NewsView.xaml
     /// </summary>
-    public partial class ExampleView : UserControl
+    public partial class NewsView : Window
     {
-        public ExampleView()
+        public NewsView()
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

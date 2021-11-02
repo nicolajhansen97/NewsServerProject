@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="MVVMStart.View.ConnectView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MVVMStart.View"
+        xmlns:model ="clr-namespace:MVVMStart.Model"
+        mc:Ignorable="d"
+        d:DesignHeight="800" d:DesignWidth="800">
+    
+    <Grid Background="LightGray">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Content="Host name" FontSize="25" Margin="35,81,35,0"></Label>
+        <TextBox Margin="-290,40,0,75" Background="White" Height="40" Width="340" VerticalContentAlignment="Center" Text="{Binding HostName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <Label Grid.Row="0" Content="Port" FontSize="25" Margin="550,81,35,0" ></Label>
+        <TextBox Margin="420,40,35,75" Background="White" Height="40" Width="120" VerticalContentAlignment="Center" Text="{Binding Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Label Grid.Row="1" Content="Username" FontSize="25" Margin="35,42,35,158" Grid.RowSpan="2"></Label>
+        <TextBox Grid.Row="1" Margin="-290,-40,0,75" Background="White" Height="40" Width="340" VerticalContentAlignment="Center" Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+        <Label Grid.Row="2" Content="Password" FontSize="25" Margin="35,42,35,0"></Label>
+        <TextBox Grid.Row="2" Margin="-290,-40,0,75" Background="White" Height="40" Width="340" VerticalContentAlignment="Center" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+        <Button Grid.Row="2" Margin="56,182,728,0" Content="Login" FontSize="35" Command="{Binding programLogin}"/>
+        <Button Grid.Row="2" Margin="296,182,486,0" Content="{Binding SaveButton}" FontSize="35" Command="{Binding saveUserInfo}"/>
+        <Button Grid.Row="2" Margin="550,182,230,0" Content="Cancel" FontSize="35" Command="{Binding quitProgram}"/>
+
+    </Grid>
+</UserControl>

@@ -6,11 +6,12 @@
         xmlns:local="clr-namespace:MVVMStart" 
         xmlns:viewmodel="clr-namespace:MVVMStart.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="1500">
+        Title="MainWindow" Height="800" Width="800"
+        WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <viewmodel:MainViewModel/>
     </Window.DataContext>
     <StackPanel>
-        <ContentControl Width="1500" Height="700" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{Binding CurrentView}"></ContentControl>
+        <ContentControl Width="1000" Height="1000" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{Binding CurrentView}"></ContentControl>
     </StackPanel>
 </Window>

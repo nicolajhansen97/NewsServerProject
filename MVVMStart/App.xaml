@@ -6,8 +6,8 @@
              xmlns:viewmodel ="clr-namespace:MVVMStart.ViewModel"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <DataTemplate DataType="{x:Type viewmodel:ExampleViewModel}">
-            <view:ExampleView/>
+        <DataTemplate DataType="{x:Type viewmodel:ConnectViewModel}">
+            <view:ConnectView/>
         </DataTemplate>
     </Application.Resources>
 </Application>
