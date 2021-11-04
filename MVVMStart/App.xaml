@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:MVVMStart"
              xmlns:view="clr-namespace:MVVMStart.View" 
-             xmlns:viewmodel ="clr-namespace:MVVMStart.ViewModel"
+             xmlns:viewmodel="clr-namespace:MVVMStart.ViewModel"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <DataTemplate DataType="{x:Type viewmodel:ConnectViewModel}">

@@ -10,7 +10,10 @@ namespace MVVMStart.ViewModel
     public class NewsViewModel : Bindable
     {
         public DelegateCommand getArticles { get; set; }
-        public string SelectedNewsServer { get; set; }
+        public DelegateCommand getArticleText { get; set; }
+        public DelegateCommand postArticle { get; set; }
+        public NewsServerModel SelectedNewsServer { get; set; }
+        public ArticleModel SelectedArticleHeadline { get; set; }
 
         public static ObservableCollection<NewsServerModel> newsServerList = new ObservableCollection<NewsServerModel>();
         public static ObservableCollection<NewsServerModel> NewsServerList
@@ -18,19 +21,56 @@ namespace MVVMStart.ViewModel
             get { return newsServerList; }
             set { newsServerList = value;  }
         }
+
+        public static ObservableCollection<ArticleModel> articleList = new ObservableCollection<ArticleModel>();
+        public static ObservableCollection<ArticleModel> ArticleList
+        {
+            get { return articleList; }
+            set { articleList = value; }
+        }
         public NewsViewModel()
         {
             getArticles = new DelegateCommand(o =>
             {
                 openArticle();
             });
+
+            getArticleText = new DelegateCommand(o =>
+            {
+                openArticleText();
+            });
+
+            postArticle = new DelegateCommand(o =>
+            {
+                PostArticle();
+            });
         }
 
         private void openArticle()
         {
-            MessageBox.Show(SelectedNewsServer);
+
+             string newsServerName = SelectedNewsServer.NewsServerName.Split(' ')[0].Replace(" ", string.Empty);
+            // MessageBox.Show(newsServerName);
+        
+           if(!newsServerName.Equals(string.Empty))
+            {
+                ConnectionModel.getArticles(newsServerName);
+            }
+        }
+
+        private void openArticleText()
+        {
+            string articleName = SelectedArticleHeadline.ArticleHeadline.Split('\t')[0];
+            int articleNumber = Int32.Parse(articleName);
+        
+            ConnectionModel.getArticleText(articleNumber);
+          
+        }
+
+        private void PostArticle()
+        {
             
-    }
+        }
     }
 }
 

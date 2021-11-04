@@ -14,27 +14,18 @@ namespace MVVMStart
     class ConnectionModel : Bindable
     {
 
-        
-
-        List<string> AllServers = new List<string>();
-
-        TcpClient socket = new TcpClient();
+        static TcpClient socket = new TcpClient();
 
         static String response;
         static byte[] downBuffer = new byte[2048];
         static byte[] byteSendInfo = new byte[2048];
 
-        int bytesSize;
-        String NewChunk;
-        NetworkStream ns = null;
-        StreamReader reader = null;
-        StreamWriter writer = null;
+        static int bytesSize;
+        static String NewChunk;
+        static NetworkStream ns = null;
 
-        public void MakeConnection(string hostname, int port, string username, string password)
+        public static void MakeConnection(string hostname, int port, string username, string password)
         {
-            
-            
-
             try {
                 //(0) check the ip via DNS first
                 IPAddress ip = Dns.GetHostEntry(hostname).AddressList[0];
@@ -84,69 +75,159 @@ namespace MVVMStart
                 // MessageBox.Show(Ex.ToString());
                 ConnectViewModel.connectedBool = false;
                 MessageBox.Show("Some of your information is wrong!");
-               
+
             }
         }
 
-        public void getList()
+        public static void getList()
         {
-
 
             byteSendInfo = StringToByteArr("list\r\n");
 
-                ns.Write(byteSendInfo, 0, byteSendInfo.Length);
+            ns.Write(byteSendInfo, 0, byteSendInfo.Length);
 
-                response = "";
+            response = "";
 
-                while ((bytesSize = ns.Read(downBuffer, 0, downBuffer.Length)) > 0)
+            while ((bytesSize = ns.Read(downBuffer, 0, downBuffer.Length)) > 0)
+            {
+
+                // Get the chunk of string
+
+                NewChunk = Encoding.ASCII.GetString(downBuffer, 0, bytesSize);
+
+                response += NewChunk;
+
+                // If the string ends in a "\r\n.\r\n" then the list is over
+
+                if (NewChunk.Substring(NewChunk.Length - 5, 5) == "\r\n.\r\n")
+
                 {
 
-                    // Get the chunk of string
+                    // Remove the "\r\n.\r\n" from the end of the string
 
-                    NewChunk = Encoding.ASCII.GetString(downBuffer, 0, bytesSize);
+                    response = response.Substring(0, response.Length - 3);
 
-                    response += NewChunk;
-
-                    // If the string ends in a "\r\n.\r\n" then the list is over
-
-                    if (NewChunk.Substring(NewChunk.Length - 5, 5) == "\r\n.\r\n")
-
-                    {
-
-                        // Remove the "\r\n.\r\n" from the end of the string
-
-                        response = response.Substring(0, response.Length - 3);
-
-                        break;
-
-                    }
+                    break;
 
                 }
-                string[] ListLines = response.Split('\n');
 
-                Console.WriteLine(ListLines.Length);
+            }
+            string[] ListLines = response.Split('\n');
 
-             
-                foreach (String ListLine in ListLines)
-                {
-
-               // NewsServerList.Add(new NewsServerModel() { NewsServerName = ListLine });
+            foreach (String ListLine in ListLines)
+            {
                 NewsViewModel.NewsServerList.Add(MakeList(ListLine));
-              
-                
-                    //Console.WriteLine(ListLine + "\n");
-                   // MessageBox.Show(ListLine);
-                }
+
+                //Console.WriteLine(ListLine + "\n");
+            }
+
         }
 
-        
-        private NewsServerModel MakeList(string list)
+        private static NewsServerModel MakeList(string list)
         {
             NewsServerModel nsm = new NewsServerModel();
 
             nsm.NewsServerName = list;
             //MessageBox.Show(nsm.NewsServer); Gets the newsservers?
             return nsm;
+        }
+
+        public static void getArticles(string useGroupName)
+        {
+            byteSendInfo = StringToByteArr("GROUP " + useGroupName + "\r\n");
+
+            ns.Write(byteSendInfo, 0, byteSendInfo.Length);
+
+            response = "";
+
+            bytesSize = ns.Read(downBuffer, 0, 2048);
+
+            response = System.Text.Encoding.ASCII.GetString(downBuffer, 0, bytesSize);
+
+            // Split the information about the newsgroup by blank spaces
+
+            string[] Group = System.Text.Encoding.ASCII.GetString(downBuffer, 0, bytesSize).Split(' ');
+
+            // Show information about the newsgroup in the txtLog TextBox
+
+            response = Group[1] + " messages in the group (messages " + Group[2] + " through " + Group[3] + ")\r\n";
+
+
+
+            // The ID of the first article in this newsgroup
+
+            int firstID = Convert.ToInt32(Group[2]);
+
+            // The ID of the last article in this newsgroup
+
+            int lastID = Convert.ToInt32(Group[3]);
+
+            for (int i = firstID; i < lastID; i++)
+            {
+                byteSendInfo = StringToByteArr("XOVER " + i + "\r\n");
+
+                ns.Write(byteSendInfo, 0, byteSendInfo.Length);
+
+                response = "";
+
+                bytesSize = ns.Read(downBuffer, 0, 2048);
+
+                response = System.Text.Encoding.ASCII.GetString(downBuffer, 0, bytesSize);
+
+                string[] ListLines = response.Split('\r', '\n');
+
+                // string heading = response.Replace("224 data follows", string.Empty);
+
+                // MessageBox.Show(heading);
+
+                foreach (string ListLine in ListLines)
+                {
+                    if (!ListLine.Contains("224 data follows") && !ListLine.Equals(".") && !ListLine.Equals(""))
+
+                   
+                        NewsViewModel.ArticleList.Add(GenerateHeadings(ListLine));
+                }
+            }
+
+        }
+
+        public static void getArticleText(int articleNumber)
+        {
+
+   
+            byteSendInfo = StringToByteArr("BODY " + articleNumber + "\r\n");
+            ns.Write(byteSendInfo, 0, byteSendInfo.Length);
+
+            response = "";
+
+            while ((bytesSize = ns.Read(downBuffer, 0, downBuffer.Length)) > 0)
+            {
+                // Get the chunk of string
+                NewChunk = Encoding.ASCII.GetString(downBuffer, 0, bytesSize);
+                response += NewChunk;
+                // If the string ends in a "\r\n.\r\n" then the list is over
+                if (NewChunk.Substring(NewChunk.Length - 5, 5) == "\r\n.\r\n")
+                {
+                    // Remove the "\r\n.\r\n" from the end of the string
+                    response = response.Substring(0, response.Length - 3);
+                    break;
+                }
+            }
+           
+            MessageBox.Show(response);
+        }
+    
+
+
+
+
+        private static ArticleModel GenerateHeadings(string headingName)
+        {
+            ArticleModel am = new ArticleModel();
+
+            am.ArticleHeadline = headingName;
+           
+            return am;
         }
         public static byte[] StringToByteArr(string str)
 

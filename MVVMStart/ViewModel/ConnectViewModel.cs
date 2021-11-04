@@ -100,8 +100,8 @@ namespace MVVMStart.ViewModel
 
         private void ProgramLogin()
         {
-            ConnectionModel connection = new ConnectionModel();
-            connection.MakeConnection(HostName, Port, Username, Password);
+          //  ConnectionModel connection = new ConnectionModel();
+            ConnectionModel.MakeConnection(HostName, Port, Username, Password);
         }
 
         private void CheckSavedData()

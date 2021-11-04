@@ -13,6 +13,8 @@ namespace MVVMStart.Model
             get { return newsServerName; }
             set { newsServerName = value; propertyIsChanged(); }
         }
+
+        
        
     }
 }

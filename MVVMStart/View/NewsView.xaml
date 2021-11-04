@@ -16,24 +16,26 @@
             </ListView.ItemTemplate>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Newsservers" Width="400" DisplayMemberBinding="{Binding NewsServerName}"/>
+                    <GridViewColumn Header="Use groups" Width="400" DisplayMemberBinding="{Binding NewsServerName}"/>
                 </GridView>
             </ListView.View>
         </ListView>
 
-        <ListView ItemsSource="{Binding }" Margin="443,35,157,115">
+        <ListView ItemsSource="{Binding ArticleList}" SelectedValue="{Binding SelectedArticleHeadline, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="405,35,10,115">
             <ListView.ItemTemplate>
-                <DataTemplate DataType="{x:Type model:NewsServerModel}">
+                <DataTemplate DataType="{x:Type model:ArticleModel}">
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Articles" Width="400" DisplayMemberBinding="{Binding NewsServerName}"/>
+                    <GridViewColumn Header="Article headlines" Width="570" DisplayMemberBinding="{Binding ArticleHeadline}"/>
                 </GridView>
             </ListView.View>
         </ListView>
 
-        <Button Content="Choose use group" Margin="37,915,855,31" Command="{Binding getArticles}"></Button>
+        <Button Content="Choose use group" Margin="59,890,833,61" Command="{Binding getArticles}" RenderTransformOrigin="0.48,-1.523"></Button>
+        <Button Content="Post an article" Margin="200,890,692,61" Command="{Binding postArticle}" RenderTransformOrigin="0.48,-1.523"></Button>
+        <Button Content="Read article" Margin="644,885,248,61" Command="{Binding getArticleText}"></Button>
 
     </Grid>
 </UserControl>
