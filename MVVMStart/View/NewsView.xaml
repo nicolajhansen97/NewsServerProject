@@ -1,12 +1,39 @@
-﻿<Window x:Class="MVVMStart.View.NewsView"
+﻿<UserControl x:Class="MVVMStart.View.NewsView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MVVMStart.View"
+        xmlns:model ="clr-namespace:MVVMStart.Model"
         mc:Ignorable="d"
-        Title="NewsView" Height="450" Width="800">
-    <Grid>
-        
+        Height="1000" Width="1000">
+    <Grid Background="LightGray">
+
+        <ListView ItemsSource="{Binding NewsServerList}" SelectedValue="{Binding SelectedNewsServer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,35,600,115">
+            <ListView.ItemTemplate>
+                <DataTemplate DataType="{x:Type model:NewsServerModel}">
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Newsservers" Width="400" DisplayMemberBinding="{Binding NewsServerName}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <ListView ItemsSource="{Binding NewsServerList}" Margin="443,35,157,115">
+            <ListView.ItemTemplate>
+                <DataTemplate DataType="{x:Type model:NewsServerModel}">
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Articles" Width="400" DisplayMemberBinding="{Binding NewsServerName}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <Button Content="Choose use group" Margin="37,915,855,31" Command="{Binding getArticles}"></Button>
+
     </Grid>
-</Window>
+</UserControl>

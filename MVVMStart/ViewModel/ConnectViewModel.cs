@@ -8,15 +8,20 @@ using System.Windows.Input;
 
 namespace MVVMStart.ViewModel
 {
+
+    
     class ConnectViewModel : Model.Bindable
+
     {
+        public NewsViewModel TDFVM { get; set; }
+
         string file = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory) + "/NewsProgram/LoginSaved.txt";
         string dir = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory) + "/NewsProgram";
         public DelegateCommand quitProgram { get; set; }
         public DelegateCommand programLogin { get; set; }
         public DelegateCommand saveUserInfo { get; set; }
 
-
+        public static bool connectedBool;
 
         private string saveButton = "Save";
 
@@ -60,6 +65,7 @@ namespace MVVMStart.ViewModel
 
         public ConnectViewModel()
         {
+
             quitProgram = new DelegateCommand(o =>
             {
                 QuitProgram();
@@ -67,7 +73,16 @@ namespace MVVMStart.ViewModel
 
             programLogin = new DelegateCommand(o =>
             {
+             
                 ProgramLogin();
+
+                  if (connectedBool)
+                {
+                    ChangeToNewsView();
+                    
+                 
+                }
+
             });
 
             saveUserInfo = new DelegateCommand(o =>
@@ -85,10 +100,8 @@ namespace MVVMStart.ViewModel
 
         private void ProgramLogin()
         {
-            MessageBox.Show("" + Port);
             ConnectionModel connection = new ConnectionModel();
             connection.MakeConnection(HostName, Port, Username, Password);
-            MessageBox.Show(Username);
         }
 
         private void CheckSavedData()
@@ -142,6 +155,12 @@ namespace MVVMStart.ViewModel
                     MessageBox.Show(Ex.ToString());
                 }
             }
+        private void ChangeToNewsView()
+        {
+            MainViewModel current = MainViewModel.current;
+            TDFVM = new NewsViewModel();
+            current.CurrentView = TDFVM;
+        }
         }
     }
 

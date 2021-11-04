@@ -4,26 +4,36 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using System.Windows;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using MVVMStart.Model;
+using MVVMStart.ViewModel;
 
 namespace MVVMStart
 {
-    class ConnectionModel
+    class ConnectionModel : Bindable
     {
 
+        
+
+        List<string> AllServers = new List<string>();
+
+        TcpClient socket = new TcpClient();
 
         static String response;
         static byte[] downBuffer = new byte[2048];
         static byte[] byteSendInfo = new byte[2048];
 
+        int bytesSize;
+        String NewChunk;
+        NetworkStream ns = null;
+        StreamReader reader = null;
+        StreamWriter writer = null;
+
         public void MakeConnection(string hostname, int port, string username, string password)
         {
-            int bytesSize;
-            String NewChunk;
-            TcpClient socket = new TcpClient();
-
-            NetworkStream ns = null;
-            StreamReader reader = null;
-            StreamWriter writer = null;
+            
+            
 
             try {
                 //(0) check the ip via DNS first
@@ -65,18 +75,24 @@ namespace MVVMStart
 
                 Console.WriteLine(response + "\n");
 
+                ConnectViewModel.connectedBool = true;
+
+                getList();
+            }
+            catch (Exception Ex)
+            {
+                // MessageBox.Show(Ex.ToString());
+                ConnectViewModel.connectedBool = false;
+                MessageBox.Show("Some of your information is wrong!");
+               
+            }
+        }
+
+        public void getList()
+        {
 
 
-                /*
-                ns.Write(byteSendInfo, 0, byteSendInfo.Length);
-
-                test = ns.ReadToEnd(downBuffer, 0, 2048);
-                response = System.Text.Encoding.ASCII.GetString(downBuffer, 0, test); ;
-
-                Console.WriteLine(response + "\n");
-                */
-
-                byteSendInfo = StringToByteArr("list\r\n");
+            byteSendInfo = StringToByteArr("list\r\n");
 
                 ns.Write(byteSendInfo, 0, byteSendInfo.Length);
 
@@ -110,23 +126,28 @@ namespace MVVMStart
 
                 Console.WriteLine(ListLines.Length);
 
-
+             
                 foreach (String ListLine in ListLines)
                 {
 
-                    Console.WriteLine(ListLine + "\n");
-                    MessageBox.Show(ListLine);
+               // NewsServerList.Add(new NewsServerModel() { NewsServerName = ListLine });
+                NewsViewModel.NewsServerList.Add(MakeList(ListLine));
+              
+                
+                    //Console.WriteLine(ListLine + "\n");
+                   // MessageBox.Show(ListLine);
                 }
-               
-            }
-            catch
-            {
-                MessageBox.Show("FAIL");
-            }
-            }
+        }
 
+        
+        private NewsServerModel MakeList(string list)
+        {
+            NewsServerModel nsm = new NewsServerModel();
 
-
+            nsm.NewsServerName = list;
+            //MessageBox.Show(nsm.NewsServer); Gets the newsservers?
+            return nsm;
+        }
         public static byte[] StringToByteArr(string str)
 
         {

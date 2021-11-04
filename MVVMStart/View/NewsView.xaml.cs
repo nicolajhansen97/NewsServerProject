@@ -15,7 +15,7 @@ namespace MVVMStart.View
     /// <summary>
     /// Interaction logic for NewsView.xaml
     /// </summary>
-    public partial class NewsView : Window
+    public partial class NewsView : UserControl
     {
         public NewsView()
         {

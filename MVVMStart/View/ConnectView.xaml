@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MVVMStart.View"
         xmlns:model ="clr-namespace:MVVMStart.Model"
         mc:Ignorable="d"
-        d:DesignHeight="800" d:DesignWidth="800">
+        d:DesignHeight="1000" d:DesignWidth="1000">
     
     <Grid Background="LightGray">
         <Grid.RowDefinitions>
@@ -27,8 +27,8 @@
         <TextBox Grid.Row="2" Margin="-290,-40,0,75" Background="White" Height="40" Width="340" VerticalContentAlignment="Center" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
 
         <Button Grid.Row="2" Margin="56,182,728,0" Content="Login" FontSize="35" Command="{Binding programLogin}"/>
-        <Button Grid.Row="2" Margin="296,182,486,0" Content="{Binding SaveButton}" FontSize="35" Command="{Binding saveUserInfo}"/>
-        <Button Grid.Row="2" Margin="550,182,230,0" Content="Cancel" FontSize="35" Command="{Binding quitProgram}"/>
+        <Button Grid.Row="2" Margin="391,182,391,0" Content="{Binding SaveButton}" FontSize="35" Command="{Binding saveUserInfo}"/>
+        <Button Grid.Row="2" Margin="692,182,88,0" Content="Cancel" FontSize="35" Command="{Binding quitProgram}"/>
 
     </Grid>
 </UserControl>

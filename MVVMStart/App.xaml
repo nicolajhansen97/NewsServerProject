@@ -9,5 +9,8 @@
         <DataTemplate DataType="{x:Type viewmodel:ConnectViewModel}">
             <view:ConnectView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodel:NewsViewModel}">
+            <view:NewsView/>
+        </DataTemplate>
     </Application.Resources>
 </Application>

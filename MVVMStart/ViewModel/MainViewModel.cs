@@ -6,6 +6,8 @@ namespace MVVMStart.ViewModel
 {
     class MainViewModel : Model.Bindable
     {
+
+        public static MainViewModel current;
         /// <summary>
         /// A getter and setter for my viewmodel
         /// </summary>
@@ -29,6 +31,7 @@ namespace MVVMStart.ViewModel
         {
             TDFVM = new ConnectViewModel();
             CurrentView = TDFVM;
+            current = this;
         }
     }
 }
