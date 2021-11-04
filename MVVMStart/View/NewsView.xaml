@@ -21,7 +21,7 @@
             </ListView.View>
         </ListView>
 
-        <ListView ItemsSource="{Binding NewsServerList}" Margin="443,35,157,115">
+        <ListView ItemsSource="{Binding }" Margin="443,35,157,115">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="{x:Type model:NewsServerModel}">
                 </DataTemplate>
