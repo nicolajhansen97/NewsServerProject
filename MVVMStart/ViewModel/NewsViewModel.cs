@@ -7,13 +7,16 @@ using System.Windows;
 
 namespace MVVMStart.ViewModel
 {
-    public class NewsViewModel : Bindable
+     class NewsViewModel : Bindable
     {
+        public PostArticleViewModel TDFVM { get; set; }
         public DelegateCommand getArticles { get; set; }
         public DelegateCommand getArticleText { get; set; }
         public DelegateCommand postArticle { get; set; }
         public NewsServerModel SelectedNewsServer { get; set; }
         public ArticleModel SelectedArticleHeadline { get; set; }
+
+        public static string newsServerName;
 
         public static ObservableCollection<NewsServerModel> newsServerList = new ObservableCollection<NewsServerModel>();
         public static ObservableCollection<NewsServerModel> NewsServerList
@@ -49,7 +52,7 @@ namespace MVVMStart.ViewModel
         private void openArticle()
         {
 
-             string newsServerName = SelectedNewsServer.NewsServerName.Split(' ')[0].Replace(" ", string.Empty);
+              newsServerName = SelectedNewsServer.NewsServerName.Split(' ')[0].Replace(" ", string.Empty);
             // MessageBox.Show(newsServerName);
         
            if(!newsServerName.Equals(string.Empty))
@@ -69,7 +72,9 @@ namespace MVVMStart.ViewModel
 
         private void PostArticle()
         {
-            
+            MainViewModel current = MainViewModel.current;
+            TDFVM = new PostArticleViewModel();
+            current.CurrentView = TDFVM;
         }
     }
 }

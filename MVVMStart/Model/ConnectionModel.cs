@@ -148,12 +148,6 @@ namespace MVVMStart
 
             string[] Group = System.Text.Encoding.ASCII.GetString(downBuffer, 0, bytesSize).Split(' ');
 
-            // Show information about the newsgroup in the txtLog TextBox
-
-            response = Group[1] + " messages in the group (messages " + Group[2] + " through " + Group[3] + ")\r\n";
-
-
-
             // The ID of the first article in this newsgroup
 
             int firstID = Convert.ToInt32(Group[2]);
@@ -228,6 +222,40 @@ namespace MVVMStart
             am.ArticleHeadline = headingName;
            
             return am;
+        }
+
+        public static void postArticle(string userName, string group, string subject, string message)
+        {
+            byteSendInfo = StringToByteArr("POST\r\n");
+
+            ns.Write(byteSendInfo, 0, byteSendInfo.Length);
+
+            byteSendInfo = StringToByteArr("FROM " + userName + "\r\n");
+
+            ns.Write(byteSendInfo, 0, byteSendInfo.Length);
+
+            byteSendInfo = StringToByteArr("NEWSGROUPS " + group + "\r\n");
+
+            ns.Write(byteSendInfo, 0, byteSendInfo.Length);
+
+            byteSendInfo = StringToByteArr("SUBJECT " + subject + "\r\n");
+
+            ns.Write(byteSendInfo, 0, byteSendInfo.Length);
+
+            byteSendInfo = StringToByteArr("MESSAGE " + message + "\r\n");
+
+            ns.Write(byteSendInfo, 0, byteSendInfo.Length);
+
+            byteSendInfo = StringToByteArr(".\r\n");
+
+            ns.Write(byteSendInfo, 0, byteSendInfo.Length);
+
+            bytesSize = ns.Read(downBuffer, 0, 2048);
+
+
+            response = System.Text.Encoding.ASCII.GetString(downBuffer, 0, bytesSize);
+
+            MessageBox.Show(response);
         }
         public static byte[] StringToByteArr(string str)
 

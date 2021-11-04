@@ -23,6 +23,8 @@ namespace MVVMStart.ViewModel
 
         public static bool connectedBool;
 
+        public static string userName = "";
+
         private string saveButton = "Save";
 
         public string SaveButton
@@ -116,6 +118,9 @@ namespace MVVMStart.ViewModel
                     Port = Int32.Parse(savedInfo[1]);
                     Username = savedInfo[2];
                     Password = savedInfo[3];
+                   
+                    //For posting later
+                    userName = savedInfo[2];
 
                 }
                 catch (Exception Ex)
