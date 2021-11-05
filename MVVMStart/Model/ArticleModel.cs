@@ -4,6 +4,7 @@ using System.Text;
 
 namespace MVVMStart.Model
 {
+    //Model class for the Articles headline
     public class ArticleModel : Bindable
     {
         private string articleHeadline;

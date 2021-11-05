@@ -4,6 +4,7 @@ using System.Text;
 
 namespace MVVMStart.Model
 {
+    //Model of the the news server name
     public class NewsServerModel : Bindable
     {
         private string newsServerName;

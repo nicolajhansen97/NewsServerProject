@@ -18,13 +18,15 @@ namespace MVVMStart.ViewModel
 
         public static string newsServerName;
 
+        //Holds all the use groups
         public static ObservableCollection<NewsServerModel> newsServerList = new ObservableCollection<NewsServerModel>();
         public static ObservableCollection<NewsServerModel> NewsServerList
         {
             get { return newsServerList; }
-            set { newsServerList = value;  }
+            set { newsServerList = value; }
         }
 
+        //Holds all the headlines
         public static ObservableCollection<ArticleModel> articleList = new ObservableCollection<ArticleModel>();
         public static ObservableCollection<ArticleModel> ArticleList
         {
@@ -49,11 +51,11 @@ namespace MVVMStart.ViewModel
             });
         }
 
+        //Loads all the headlines
         private void openArticle()
         {
 
               newsServerName = SelectedNewsServer.NewsServerName.Split(' ')[0].Replace(" ", string.Empty);
-            // MessageBox.Show(newsServerName);
         
            if(!newsServerName.Equals(string.Empty))
             {
@@ -61,6 +63,7 @@ namespace MVVMStart.ViewModel
             }
         }
 
+        //Loads the text from the choosed headline
         private void openArticleText()
         {
             string articleName = SelectedArticleHeadline.ArticleHeadline.Split('\t')[0];
@@ -70,6 +73,7 @@ namespace MVVMStart.ViewModel
           
         }
 
+        //Changes the view
         private void PostArticle()
         {
             MainViewModel current = MainViewModel.current;

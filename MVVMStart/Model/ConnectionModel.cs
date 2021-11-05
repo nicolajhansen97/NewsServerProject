@@ -11,6 +11,7 @@ using MVVMStart.ViewModel;
 
 namespace MVVMStart
 {
+    //ConnectionModel which ended as more as a model, now its making everything that has something todo with the connection with the NTTP Protocol
     class ConnectionModel : Bindable
     {
 
@@ -24,6 +25,7 @@ namespace MVVMStart
         static String NewChunk;
         static NetworkStream ns = null;
 
+        //Makes the connection with 4 parameters
         public static void MakeConnection(string hostname, int port, string username, string password)
         {
             try {
@@ -75,10 +77,10 @@ namespace MVVMStart
                 // MessageBox.Show(Ex.ToString());
                 ConnectViewModel.connectedBool = false;
                 MessageBox.Show("Some of your information is wrong!");
-
             }
         }
 
+        //Gets the list
         public static void getList()
         {
 
@@ -114,21 +116,20 @@ namespace MVVMStart
             }
             string[] ListLines = response.Split('\n');
 
+
+            //Is adding everything to the observblecollection
             foreach (String ListLine in ListLines)
             {
                 NewsViewModel.NewsServerList.Add(MakeList(ListLine));
-
-                //Console.WriteLine(ListLine + "\n");
             }
 
         }
-
         private static NewsServerModel MakeList(string list)
         {
             NewsServerModel nsm = new NewsServerModel();
 
             nsm.NewsServerName = list;
-            //MessageBox.Show(nsm.NewsServer); Gets the newsservers?
+
             return nsm;
         }
 
@@ -170,10 +171,7 @@ namespace MVVMStart
 
                 string[] ListLines = response.Split('\r', '\n');
 
-                // string heading = response.Replace("224 data follows", string.Empty);
-
-                // MessageBox.Show(heading);
-
+                //Removes data which is not needed for the list
                 foreach (string ListLine in ListLines)
                 {
                     if (!ListLine.Contains("224 data follows") && !ListLine.Equals(".") && !ListLine.Equals(""))
@@ -185,6 +183,7 @@ namespace MVVMStart
 
         }
 
+        //Gets the main text of the article. BODY is used instead of ARTICLE as this only give the body and not unrelevant data
         public static void getArticleText(int articleNumber)
         {
 
@@ -224,29 +223,30 @@ namespace MVVMStart
             return am;
         }
 
+        //Method takes 4 parameters, which is needed to be able to make a post.
         public static void postArticle(string userName, string group, string subject, string message)
         {
             byteSendInfo = StringToByteArr("POST\r\n");
 
             ns.Write(byteSendInfo, 0, byteSendInfo.Length);
 
-            byteSendInfo = StringToByteArr("FROM " + userName + "\r\n");
+            byteSendInfo = StringToByteArr("FROM: " + userName + "\r\n");
 
             ns.Write(byteSendInfo, 0, byteSendInfo.Length);
 
-            byteSendInfo = StringToByteArr("NEWSGROUPS " + group + "\r\n");
+            byteSendInfo = StringToByteArr("NEWSGROUPS: " + group + "\r\n");
 
             ns.Write(byteSendInfo, 0, byteSendInfo.Length);
 
-            byteSendInfo = StringToByteArr("SUBJECT " + subject + "\r\n");
+            byteSendInfo = StringToByteArr("SUBJECT: " + subject + "\r\n");
 
             ns.Write(byteSendInfo, 0, byteSendInfo.Length);
 
-            byteSendInfo = StringToByteArr("MESSAGE " + message + "\r\n");
+            byteSendInfo = StringToByteArr("MESSAGE: " + message + "\r\n");
 
             ns.Write(byteSendInfo, 0, byteSendInfo.Length);
 
-            byteSendInfo = StringToByteArr(".\r\n");
+            byteSendInfo = StringToByteArr("\r\n.\r\n");
 
             ns.Write(byteSendInfo, 0, byteSendInfo.Length);
 
@@ -255,12 +255,31 @@ namespace MVVMStart
 
             response = System.Text.Encoding.ASCII.GetString(downBuffer, 0, bytesSize);
 
+            //Making the different responses easier to understand for the user
+            if(response.Contains("340"))
+            {
+                response = "340 - Everything is okay, press post article again to confirm posting!";
+            }
+            else if (response.Contains("240"))
+            {
+                response = "240 - Your article have ben posted!";
+            }
+            else if (response.Contains("440"))
+            {
+                response = "440 - Posting is not allowed!";
+            }
+            else
+            {
+                response = "441 - Posting failed!";
+            }
+
             MessageBox.Show(response);
+
         }
+        //The protocol need the text as bytes, therefor this method will convert it to bytes, so it can be understanded.
         public static byte[] StringToByteArr(string str)
 
         {
-
             System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
 
             return encoding.GetBytes(str);

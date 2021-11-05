@@ -31,6 +31,8 @@ namespace MVVMStart.ViewModel
             });
 
         }
+
+        //Changes the view
         public void goBackToNewsView()
         {
             MainViewModel current = MainViewModel.current;
@@ -38,10 +40,12 @@ namespace MVVMStart.ViewModel
             current.CurrentView = TDFVM;
         }
 
+
+        //Will call the method and give the parameters, which will post an article
         public void postArticle()
         {
-            ConnectionModel.postArticle(userName, "dk.test", articleSubject, articleMessage);
-            //newsServerChosen
+            ConnectionModel.postArticle(userName, newsServerChosen, articleSubject, articleMessage);
+            //edit newsServerChosen to dk.test if you want to test
         }
 
     }

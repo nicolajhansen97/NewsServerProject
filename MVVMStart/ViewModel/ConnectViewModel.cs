@@ -15,6 +15,7 @@ namespace MVVMStart.ViewModel
     {
         public NewsViewModel TDFVM { get; set; }
 
+        //Used to create the saved data
         string file = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory) + "/NewsProgram/LoginSaved.txt";
         string dir = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory) + "/NewsProgram";
         public DelegateCommand quitProgram { get; set; }
@@ -95,17 +96,20 @@ namespace MVVMStart.ViewModel
             CheckSavedData();
 
         }
+
+        //Just a simple function to clcose the program
         private void QuitProgram()
         {
             Application.Current.Shutdown();
         }
 
+        //Calls the method that connect to the server and give it the parameters needed.
         private void ProgramLogin()
         {
-          //  ConnectionModel connection = new ConnectionModel();
             ConnectionModel.MakeConnection(HostName, Port, Username, Password);
         }
-
+        
+        //This method is called everytime the program is used, it checks if you have some saved data, if you have saved data it will load them.
         private void CheckSavedData()
         {
             if (File.Exists(file))
@@ -130,12 +134,13 @@ namespace MVVMStart.ViewModel
             }
         }
         
+        //This method will save the data when you press the save data button.
         private void SaveData()
         {
 
             try
                 {
-
+                //Checks if the folder allready exist, if not it creates it.
                 if (!Directory.Exists(dir))
                 {
                     Directory.CreateDirectory(dir);
@@ -160,6 +165,8 @@ namespace MVVMStart.ViewModel
                     MessageBox.Show(Ex.ToString());
                 }
             }
+
+        //Changes the current view to another view
         private void ChangeToNewsView()
         {
             MainViewModel current = MainViewModel.current;
